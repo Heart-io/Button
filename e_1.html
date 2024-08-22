@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Button Press Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            max-width: 80%;
+        }
+
+        .game-button {
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--button-color, #007bff);
+            color: white;
+        }
+
+        .game-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .troll-button {
+            background-color: #ff4757;
+        }
+    </style>
+</head>
+<body>
+    <h1>Emoji Button Press Game</h1>
+    <div class="button-container" id="buttonContainer"></div>
+
+    <script>
+        // Array of colored emojis to use
+        const emojis = ['🔴', '🟠', '🟡', '🟢', '🔵', '🟣', '⚫️', '⚪️', '🟤', '🔲'];
+        
+        // Generate buttons dynamically
+        function createButtons() {
+            const container = document.getElementById('buttonContainer');
+            for (let i = 0; i < 50; i++) {
+                const button = document.createElement('button');
+                button.classList.add('game-button');
+                button.textContent = emojis[i % emojis.length];
+                button.style.setProperty('--button-color', getButtonColor(button.textContent));
+                button.addEventListener('click', () => triggerEvent(`Button  says: `));
+                container.appendChild(button);
+            }
+
+            // Add the troll button as the last button
+            const trollButton = document.createElement('button');
+            trollButton.classList.add('game-button', 'troll-button');
+            trollButton.textContent = '😈';
+            trollButton.addEventListener('click', triggerTroll);
+            container.appendChild(trollButton);
+        }
+
+        // Generate random event messages
+        function generateRandomMessage() {
+            const messages = [
+                'You won a free pizza! 🍕',
+                'Your code is bug-free! 🎉',
+                'Aliens are real! 👽',
+                'You just found a treasure chest! 💰',
+                'You are a coding master! 👨‍💻',
+                'You just traveled through time! 🕰️',
+                'You found the secret button! 🕵️‍♂️',
+                'Your app just went viral! 🌍',
+                'A cat just crossed your path! 🐱',
+                'You unlocked a hidden feature! 🔓',
+                'You just got Rickrolled! 😂'
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        // Assign color to button based on emoji
+        function getButtonColor(emoji) {
+            switch(emoji) {
+                case '🔴': return '#ff4757';
+                case '🟠': return '#ff7f50';
+                case '🟡': return '#ffd700';
+                case '🟢': return '#2ecc71';
+                case '🔵': return '#3498db';
+                case '🟣': return '#9b59b6';
+                case '⚫️': return '#34495e';
+                case '⚪️': return '#ecf0f1';
+                case '🟤': return '#8e44ad';
+                case '🔲': return '#2d3436';
+                default: return '#007bff';
+            }
+        }
+
+        // Trigger event when button is clicked
+        function triggerEvent(message) {
+            alert(message);
+        }
+
+        // Troll button functionality
+        function triggerTroll() {
+            setTimeout(() => {
+                window.open('https://www.youtube.com/watch?v=NCoI4DXU5TE', '_blank');
+                window.close();
+            }, 500);
+
+            // YouTube API to detect when the video ends
+            window.onYouTubeIframeAPIReady = function () {
+                var player = new YT.Player('player', {
+                    events: {
+                        'onStateChange': function (event) {
+                            if (event.data === YT.PlayerState.ENDED) {
+                                window.open(window.location.href, '_blank');
+                            }
+                        }
+                    }
+                });
+            };
+
+            // Load the YouTube API script
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        }
+
+        // Initialize the buttons on page load
+        window.onload = createButtons;
+    </script>
+</body>
+</html>
